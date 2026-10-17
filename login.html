@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FoundIT — Change Password</title>
+  <style>
+    :root {
+      --ink: #f7f5ff;
+      --muted: #d8d3e8;
+      --panel: #6b5b91;
+      --field: rgba(210, 201, 231, 0.27);
+      --blue: #4058c8;
+      --blue-hover: #4d68df;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(ellipse at 15% 10%, #29253e 0, transparent 38%),
+        linear-gradient(135deg, #171620, #242033 55%, #17151f);
+    }
+
+    .page {
+      width: min(1120px, 100%);
+      min-height: 690px;
+      display: grid;
+      grid-template-columns: 1.03fr 1fr;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      background: #5c4c83;
+      box-shadow: 0 24px 70px rgba(0,0,0,.34);
+    }
+
+    .brand-panel {
+      position: relative;
+      z-index: 2;
+      isolation: isolate;
+      /* Let the branding panel sit in front of the form panel. */
+      margin-right: -18px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      padding: clamp(28px, 5vw, 76px);
+      min-height: 100%;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(15, 15, 35, 0.15),
+                        rgba(15, 15, 35, 0.15)),
+        url(image_dca89402.jpg) center / cover no-repeat;
+    }
+
+    /* Layered curves imitate the glossy, folded abstract artwork in the reference. */
+    .brand-panel::before,
+    .brand-panel::after {
+      content: "";
+      position: absolute;
+      inset: -25%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .brand-copy {
+      max-width: 390px;
+      text-shadow: 0 2px 5px rgba(0,0,0,.35);
+    }
+
+    .brand-copy h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2.25rem, 4vw, 3.4rem);
+      line-height: 1.02;
+      letter-spacing: -.04em;
+      font-weight: 700;
+    }
+
+    .brand-copy p {
+      margin: 0;
+      max-width: 310px;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .form-panel {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background:
+        radial-gradient(ellipse at 50% 85%, rgba(117,91,171,.7), transparent 48%),
+        linear-gradient(160deg, #777080 0%, #54447d 54%, #6e5c9b 100%);
+    }
+
+    .topbar {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 28px;
+      border-bottom: 1px solid rgba(255,255,255,.28);
+    }
+
+    .brand-mark {
+      width: 29px;
+      height: 29px;
+      flex: 0 0 29px;
+      display: grid;
+      place-items: center;
+      border: 2px solid #f8f6ff;
+      border-radius: 9px 9px 5px 5px;
+      font-size: 17px;
+      font-weight: 800;
+      transform: rotate(45deg) scale(.85);
+    }
+
+    .brand-mark span { transform: rotate(-45deg); }
+    .brand-name { font-size: 1rem; font-weight: 700; letter-spacing: .01em; }
+
+    .form-content {
+      width: min(100% - 64px, 390px);
+      margin: auto;
+      padding: 48px 0;
+    }
+
+    .form-content h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .field {
+      width: 100%;
+      margin-top: 16px;
+      padding: 14px 15px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 8px;
+      outline: none;
+      color: #fff;
+      font: inherit;
+      background: var(--field);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,.06);
+      transition: border-color .18s, background .18s, box-shadow .18s;
+    }
+
+    .field::placeholder { color: #e0dbea; opacity: .9; }
+    .field:focus {
+      border-color: rgba(255,255,255,.75);
+      background: rgba(222,215,241,.34);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.12);
+    }
+
+    .login {
+      width: 100%;
+      margin-top: 17px;
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 7px;
+      color: #fff;
+      background: var(--blue);
+      font: inherit;
+      cursor: pointer;
+      transition: background .18s, transform .18s;
+    }
+
+    .login:hover { background: var(--blue-hover); }
+    .login:active { transform: translateY(1px); }
+    .message {
+      min-height: 1.25em;
+      margin: 12px 0 0;
+      color: #fff;
+      font-size: .88rem;
+      line-height: 1.4;
+    }
+
+    .create {
+      width: 100%;
+      margin-top: 17px;
+      padding: 14px 18px;
+      border: 0;
+      border-radius: 7px;
+      color: #fff;
+      background: var(--blue);
+      font: inherit;
+      cursor: pointer;
+      transition: background .18s, transform .18s;
+    }
+
+    .create:hover { background: var(--blue-hover); }
+    .create:active { transform: translateY(1px); }
+    .message {
+      min-height: 1.25em;
+      margin: 12px 0 0;
+      color: #fff;
+      font-size: .88rem;
+      line-height: 1.4;
+    }
+
+
+    .footer {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      padding: 18px 28px;
+      border-top: 1px solid rgba(255,255,255,.2);
+      font-size: .75rem;
+      background-color:#29253e;
+    }
+
+    .help { max-width: 145px; font-weight: 800; line-height: 1.45; }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px 20px;
+    }
+    .footer a { color: #f4f0ff; text-decoration: none; white-space: nowrap; }
+    .footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 760px) {
+      body { padding: 14px; }
+      .page {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        max-width: 520px;
+        border-radius: 13px;
+      }
+      .brand-panel {
+        min-height: 245px;
+        margin-right: 0;
+        border-radius: 0;
+        padding: 32px;
+        background-position: center;
+      }
+      .brand-copy h1 { font-size: clamp(2.1rem, 8vw, 2.8rem); }
+      .brand-copy p { font-size: .95rem; }
+      .topbar { min-height: 58px; padding: 15px 22px; }
+      .form-content { width: calc(100% - 44px); padding: 38px 0 42px; }
+      .footer { padding: 17px 22px; align-items: flex-start; flex-direction: column; gap: 14px; }
+      .footer-links { justify-content: flex-start; gap: 10px 16px; }
+    }
+
+    @media (max-width: 360px) {
+      body { padding: 8px; }
+      .brand-panel { min-height: 220px; padding: 24px; }
+      .form-content { width: calc(100% - 36px); }
+      .footer { padding-inline: 18px; }
+      .footer-links { gap: 9px 12px; }
+    }
+
+    .forgot-password {
+    margin-top: 10px;
+    text-align: right;
+    font-size: 0.85rem;
+    }
+
+    .forgot-password a {
+        color: #f4f0ff;
+        text-decoration: none;
+    }
+
+    .forgot-password a:hover {
+        text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="brand-panel" aria-label="FoundIT introduction">
+      <div class="brand-copy">
+        <h1>Log In</h1>
+        <p>Help the community. Let us grow into a better society.</p>
+      </div>
+    </section>
+
+    <section class="form-panel" aria-label="Change password form">
+      <header class="topbar">
+        <div class="brand-mark" aria-hidden="true"><span>✦</span></div>
+        <span class="brand-name">FoundIT</span>
+      </header>
+
+      <form class="form-content" id="passwordForm">
+        <h2>Log into FoundIT</h2>
+        <label for="username" hidden>Username</label>
+        <input class="field" id="username" name="username" type="text"
+              placeholder="Username" autocomplete="username" required />
+
+        <label for="password" hidden>Password</label>
+        <input class="field" id="password" name="password" type="password"
+       placeholder="Password" autocomplete="current-password" required />
+
+        <button class="login" type="submit">LOG IN</button>
+        <button class="create" type="submit">Create New Account</button>
+
+        <div class="forgot-password">
+          <a href="forgot-password.html">Forgot Password?</a>
+        </div>
+      </form>
+
+      <footer class="footer">
+        <div class="help">WANT TO HELP<br />PEOPLE?</div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="#privacy">Privacy &amp; Policy</a>
+          <a href="#faqs">FAQS</a>
+          <a href="#terms">Terms &amp; Conditions</a>
+        </nav>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>
