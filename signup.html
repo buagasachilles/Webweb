@@ -342,16 +342,17 @@
       </header>
 
 
-      <form class="form-content" id="signupForm">
+      <form class="form-content" id="signupForm"
+      action="auth.php?page=register" method="POST">
             <h2>Create Account</h2>
 
             <!-- Row 1: First name and last name -->
             <div class="name-row">
-                <input class="field" id="firstName" name="firstName"
+                <input class="field" id="firstName" name="first_name"
                     type="text" placeholder="First Name"
                     autocomplete="given-name" required />
 
-                <input class="field" id="lastName" name="lastName"
+                <input class="field" id="lastName" name="last_name"
                     type="text" placeholder="Last Name"
                     autocomplete="family-name" required />
             </div>
@@ -374,16 +375,14 @@
 
             <!-- Row 5: Confirm password -->
             <input class="field" id="confirmPassword"
-                name="confirmPassword" type="password"
+                name="confirm_password" type="password"
                 placeholder="Confirm Password"
                 autocomplete="new-password"
                 minlength="8" required />
 
             <!-- Sign Up and Log In buttons -->
             <div class="auth-buttons">
-                <button class="continue" type="submit">
-                    Sign Up
-                </button>
+               <button class="continue" type="submit">Sign Up</button>
 
                 <a class="login-button" href="login.html">
                     Log In
