@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FoundIT — Email Verification</title>
+  <title>FoundIT - Email Verification</title>
   <style>
     :root {
       --text: #f7f5ff;
@@ -94,20 +94,27 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.28);
     }
 
-    .brand-mark {
-      width: 29px;
-      height: 29px;
-      flex: 0 0 29px;
-      display: grid;
-      place-items: center;
-      border: 2px solid #f8f6ff;
-      border-radius: 9px 9px 5px 5px;
-      font-size: 17px;
-      font-weight: 800;
-      transform: rotate(45deg) scale(0.85);
+    
+    .brand-link {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      text-decoration: none;
     }
 
-    .brand-mark span { transform: rotate(-45deg); }
+    .brand-link img {
+      display: block;
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+    }
+
+    .brand-name {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
 
     .brand-name {
       font-size: 1rem;
@@ -297,10 +304,14 @@
     </section>
 
     <section class="form-panel" aria-label="Email verification">
+      
       <header class="topbar">
-        <div class="brand-mark" aria-hidden="true"><span>✦</span></div>
+        <a href="index.html" class="brand-link" aria-label="FoundIT home">
+          <img src="logo.png" alt="FoundIT logo">
+        </a>
         <span class="brand-name">FoundIT</span>
       </header>
+
 
       <form class="verification-form" id="emailVerificationForm">
         <h2>Enter Your Code</h2>
