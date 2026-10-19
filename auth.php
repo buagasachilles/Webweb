@@ -134,7 +134,8 @@ if ($page === "verify") {
 
     if ($is_post && isset($_POST["resend"])) {
         new_code($pdo, $email);
-        $message = "A new demo code was generated.";
+        header("Location: signup-verification.php?resent=1");
+        exit;
     } elseif ($is_post) {
         $entered = trim($_POST["code"] ?? "");
 
@@ -166,13 +167,17 @@ if ($page === "verify") {
                 );
                 $stmt->execute([$email]);
 
-                go("login&verified=1");
+                header("Location: login.html?verified=1");
+                exit;
             } else {
                 $_SESSION["reset_email"] = $email;
-                go("change");
+
+                header("Location: change-password.html");
+                exit;
             }
         } else {
-            $error = "Incorrect verification code.";
+            header("Location: signup-verification.php?error=invalid");
+            exit;
         }
     }
 }
@@ -189,7 +194,8 @@ if ($page === "login" && $is_post) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$user || !password_verify($password, $user["password"])) {
-        $error = "Wrong username or password.";
+        header("Location: login.html?error=invalid");
+        exit;
     } elseif (!$user["is_verified"]) {
         $error = "Please verify your account first.";
     } elseif (isset($_POST["admin"]) && !$user["is_admin"]) {
@@ -221,11 +227,13 @@ if ($page === "forgot" && $is_post) {
         $_SESSION["pending_email"] = $email;
         $_SESSION["purpose"] = "reset";
 
-        go("verify");
+        header("Location: signup-verification.php");
+        exit;
     }
 }
 
-// PART 6: CHANGE PASSWORD
+
+ // PART 6: CHANGE PASSWORD
 if ($page === "change") {
     if (!isset($_SESSION["reset_email"])) {
         go("forgot");
@@ -235,8 +243,10 @@ if ($page === "change") {
         $new = $_POST["new_password"] ?? "";
         $confirm = $_POST["confirm_password"] ?? "";
 
-        if (strlen($new) < 6) {
-            $error = "Password must be at least 6 characters.";
+        if ($new === "" || $confirm === "") {
+            $error = "Please fill in both password fields.";
+        } elseif (strlen($new) < 8) {
+            $error = "Password must be at least 8 characters.";
         } elseif ($new !== $confirm) {
             $error = "Passwords do not match.";
         } else {
@@ -249,10 +259,13 @@ if ($page === "change") {
             $stmt->execute([$hash, $_SESSION["reset_email"]]);
 
             unset($_SESSION["reset_email"]);
-            go("login&reset=1");
+
+            header("Location: login.html?reset=1");
+            exit;
         }
     }
 }
+
 
 // PART 7: PROTECT HOME PAGE
 if ($page === "home" && !isset($_SESSION["user_id"])) {

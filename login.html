@@ -348,8 +348,12 @@
         <span class="brand-name">FoundIT</span>
       </header>
 
-      <form class="form-content" id="loginForm">
+      <form class="form-content" id="loginForm"
+      action="auth.php?page=login" method="POST">
         <h2>Log into FoundIT</h2>
+        <p id="loginMessage" role="alert"
+          style="display:none; color:#fff; font-size:14px;">
+        </p>
 
         <label for="username" hidden>Username</label>
         <input
@@ -375,7 +379,7 @@
 
         <button class="login" type="submit">LOG IN</button>
 
-        <a class="create" href="register.html">
+        <a class="create" href="signup.html">
           Create New Account
         </a>
 
@@ -396,5 +400,14 @@
 
     </section>
   </main>
+  <script>
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("error") === "invalid") {
+      const message = document.getElementById("loginMessage");
+      message.textContent = "Wrong username or password. Please try again.";
+      message.style.display = "block";
+  }
+  </script>
 </body>
 </html>

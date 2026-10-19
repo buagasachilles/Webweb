@@ -205,11 +205,12 @@ $demoCode = $_SESSION["demo_code"] ?? "";
 
     .resend-code,
     .back-to-login {
-      margin: 20px 0 0;
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.6;
-      text-align: center;
+        margin: 4px 0 0;
+        padding: 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+        line-height: 1.6;
+        text-align: center;
     }
 
     .resend-code a,
@@ -302,6 +303,20 @@ $demoCode = $_SESSION["demo_code"] ?? "";
       .footer { padding-inline: 18px; }
       .footer-links { gap: 9px 12px; }
     }
+
+    .resend-code button {
+        background: none;
+        border: 0;
+        padding: 0;
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .resend-code button:hover {
+        text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -329,9 +344,20 @@ $demoCode = $_SESSION["demo_code"] ?? "";
       method="POST">
       <input type="hidden" name="code" id="verificationCode">
         <h2>Enter Your Code</h2>
+        <?php if (($_GET["resent"] ?? "") === "1"): ?>
+            <p role="status" style="color: #fff; text-align: center;">
+                A new demo verification code was generated.
+            </p>
+        <?php endif; ?>
+        <?php if (($_GET["error"] ?? "") === "invalid"): ?>
+            <p role="alert" style="color: #fff; text-align: center;">
+                Incorrect verification code. Please try again.
+            </p>
+        <?php endif; ?>
+
         <p class="verification-description">
-          We've sent a 4-digit verification code to your email address.
-          Enter the code below to verify your account.
+            We've sent a 4-digit verification code to your email address.
+            Enter the code below to verify your account.
         </p>
         <p>
             Demo verification code:
@@ -352,8 +378,20 @@ $demoCode = $_SESSION["demo_code"] ?? "";
         <p class="code-hint" id="codeHint">Enter the 4-digit code from your email.</p>
         <button class="verify-button" type="submit">Verify Account</button>
 
-        <p class="resend-code">Didn't receive the code? <a href="resend-code">Resend Code</a></p>
-        <p class="back-to-login">Already verified?<a href="auth.php?page=login">Log In</a></p>
+        <div class="resend-code">
+          <span>Didn't receive the code? </span>
+
+          <form action="auth.php?page=verify" method="POST"
+                style="display: inline;">
+              <button type="submit" name="resend" value="1">
+                  Resend Code
+              </button>
+          </form>
+      </div>
+        <p class="back-to-login">
+            <span>Already verified?</span>
+            <a href="login.html">Log In</a>
+        </p>
       </form>
 
       <footer class="footer">
